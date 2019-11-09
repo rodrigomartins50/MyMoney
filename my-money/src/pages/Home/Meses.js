@@ -5,7 +5,7 @@ import Rest from '../../utils/rest'
 
 const baseUrl = 'https://mymoney-rodrigomartins.firebaseio.com/'
 
-const {useGet, usePost, useDelete} = Rest(baseUrl)
+const {useGet} = Rest(baseUrl)
 
 const Meses = () => {
   const data = useGet('meses')
