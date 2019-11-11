@@ -3,11 +3,13 @@ import Rest from '../utils/rest'
 
 const baseUrl = 'https://mymoney-rodrigomartins.firebaseio.com/'
 
-const {useGet, usePost, useDelete} = Rest(baseUrl)
+const {useGet, usePost, useDelete, usePatch} = Rest(baseUrl)
 
 const Movimentacoes = ({ match }) => {
 
   const data = useGet(`movimentacoes/${match.params.data}`)
+  const dataMeses = useGet(`meses/${match.params.data}`)
+  const [dataPatch, patch] = usePatch()
   const [postData, salvar] = usePost(`movimentacoes/${match.params.data}`)
   const [reniveData, remover] = useDelete()
 
@@ -33,6 +35,7 @@ const Movimentacoes = ({ match }) => {
       setValor(0)
 
       data.refetch()
+      dataMeses.refetch()
     }
   }
 
@@ -40,11 +43,30 @@ const Movimentacoes = ({ match }) => {
     await remover(`movimentacoes/${match.params.data}/${id}`)
 
     data.refetch()
+    dataMeses.refetch()
+  }
+
+  const alterarPrevisaoEntrada = async(evt) => {
+    await patch(`meses/${match.params.data}`, {previsao_entrada: evt.target.value})
+    dataMeses.refetch()
+  }
+
+  const alterarPrevisaoSaida = async(evt) => {
+    await patch(`meses/${match.params.data}`, {previsao_saida: evt.target.value})
+    dataMeses.refetch()
   }
 
   return (
     <div className='container'>
       <h1>Movimentações</h1>
+
+      {
+        !dataMeses.loading &&
+        <div>
+        Previsão entrada: {dataMeses.data.previsao_entrada} <input type='text' onBlur={alterarPrevisaoEntrada} /> / Previsão saída: {dataMeses.data.previsao_saida} <input type='text' onBlur={alterarPrevisaoSaida} /> <br />
+        Entradas: {dataMeses.data.entradas} / Saídas: {dataMeses.data.saidas}
+        </div>
+      }
 
       <table className='table'>
         <thead>

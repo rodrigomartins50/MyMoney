@@ -65,7 +65,7 @@ const init = baseUrl => {
   const useDelete = () => {
     const [data, dispatch] = useReducer(reducer, INITIAL_STATE)
   
-    const remove = async(resource) => {
+    const remove = async(resource, data) => {
       dispatch({type: 'REQUEST'})
   
       await axios.delete(baseUrl + resource + '.json')
@@ -76,10 +76,25 @@ const init = baseUrl => {
     return [data, remove]
   }
 
+  const usePatch = () => {
+    const [data, dispatch] = useReducer(reducer, INITIAL_STATE)
+  
+    const patch = async(resource, data) => {
+      dispatch({type: 'REQUEST'})
+  
+      await axios.patch(baseUrl + resource + '.json', data)
+      
+      dispatch({type: 'SUCCESS'})
+    }
+  
+    return [data, patch]
+  }
+
   return {
     useGet,
     usePost,
-    useDelete
+    useDelete,
+    usePatch
   }
 }
 
