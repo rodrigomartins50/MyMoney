@@ -61,7 +61,7 @@ const Movimentacoes = ({ match }) => {
       <h1>Movimentações</h1>
 
       {
-        !dataMeses.loading &&
+        !dataMeses.loading && dataMeses.data &&
         <div>
         Previsão entrada: {dataMeses.data.previsao_entrada} <input type='text' onBlur={alterarPrevisaoEntrada} /> / Previsão saída: {dataMeses.data.previsao_saida} <input type='text' onBlur={alterarPrevisaoSaida} /> <br />
         Entradas: {dataMeses.data.entradas} / Saídas: {dataMeses.data.saidas}
